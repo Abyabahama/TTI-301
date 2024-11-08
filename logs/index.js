@@ -26,10 +26,13 @@ const funcoes = {
         baseLogs[baseLogs.length] = [baseLogs.length, evento.tipo, hora]
         console.log(baseLogs)
     }
+
     
 }
 
-
+app.get('/lembretes', (req, res) =>{
+    res.status(200).send(baseLogs);
+});
 
 
 
