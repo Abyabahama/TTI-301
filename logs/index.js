@@ -1,6 +1,9 @@
 const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser')
+require('dotenv').config()
+const { PORT } = process.env
+const { BARR } = process.env
 
 const app = express();
 app.use(bodyParser.json());
@@ -36,19 +39,6 @@ app.get('/lembretes', (req, res) =>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.post('/eventos', (req, res) => {
     try{
         funcoes[req.body.tipo](req.body);
@@ -57,6 +47,6 @@ app.post('/eventos', (req, res) => {
     res.status(200).send(baseLogs);
 });
 
-app.listen(8000, (() => {
-    console.log('Logs, porta 8000');
+app.listen(PORT, (() => {
+    console.log(`Logs, porta ${PORT}`);
 }));

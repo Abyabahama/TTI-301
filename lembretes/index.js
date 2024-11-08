@@ -2,6 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const app = express();
+require('dotenv').config()
+const { PORT } = process.env
+const { BARR } = process.env
+
 app.use(bodyParser.json());
 lembretes = {};
 contador = 0;
@@ -17,7 +21,7 @@ app.put ('/lembretes', async (req, res) => {
         contador,
         texto
     };
-    await axios.post("http://localhost:10000/eventos", {
+    await axios.post(`http://barramento-de-eventos-service:${BARR}/eventos`, {
         tipo: "LembreteCriado",
         dados: {
             contador,
@@ -32,6 +36,6 @@ app.post("/eventos", (req, res) => {
     res.status(201).send({ msg: 'ok' });
 })
 
-app.listen(4000, () => {
-    console.log('Lembretes, porta 4000')
+app.listen(PORT, () => {
+    console.log(`Lembretes, porta ${PORT}`)
 })

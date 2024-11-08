@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+require('dotenv').config()
+const { PORT } = process.env
+const { BARR } = process.env
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,7 +15,7 @@ const funcoes = {
         const observacoes = observacoesPorLembreteId[observacao.lembreteId];
         const obsParaAtualizar = observacoes.find(o => o.id === observacao.id);
         obsParaAtualizar.status = observacao.status;
-        axios.post('http://localhost:10000/eventos', {
+        axios.post(`http://localhost:10000/eventos`, {
             tipo: "ObservacaoAtualizada",
             dados: {
                 id: observacao.id,
@@ -34,7 +37,7 @@ app.put('/lembretes/:id/observacoes', async (req, res) => {
     observacoesDoLembrete.push({ id: id0bs, texto, status:'aguardando' });
     observacoesPorLembreteId[req.params.id] = observacoesDoLembrete;
 
-    await axios.post('http://localhost:10000/eventos', {
+    await axios.post(`http://barramento-de-eventos-service:${BARR}/eventos`, {
         tipo: 'ObservacaoCriada',
         dados: {
             id: id0bs, texto, lembreteId: req.params.id, status: 'aguardando'
@@ -56,6 +59,6 @@ app.post("/eventos", (req, res) => {
     res.status(201).send({ msg: 'ok' });
 })
 
-app.listen(5000, (() => {
-    console.log('Lembretes, porta 5000');
+app.listen(PORT, (() => {
+    console.log(`Lembretes, porta ${PORT}`);
 }));

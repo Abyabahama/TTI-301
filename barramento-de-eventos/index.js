@@ -2,6 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const app = express();
+require('dotenv').config()
+const { PORT } = process.env
+const { PORTLEM } = process.env
+const { PORTOBS } = process.env
+const { PORTCLA } = process.env
+const { PORTCON } = process.env
+const { PORTLOG } = process.env
+
 
 app.use(bodyParser.json());
 
@@ -12,23 +20,23 @@ app.post('/eventos', (req, res) => {
     eventos.push(evento)
     //Envia evento para o ms de lembretes
     try {
-        axios.post('http://localhost:4000/eventos', evento);
+        axios.post('http://lembretes-clusterip-service:${PORTLEM}/eventos', evento);
     } catch (err) {alert}
-    //Envia evento para o ms de observacoes
+     //Envia evento para o ms de observacoes
     try {
-        axios.post('http://localhost:5000/eventos', evento);
+        axios.post('http://observacoes-clusterip-service:${PORTOBS}/eventos', evento);
     } catch (err) {alert}
     //Envia evento para o ms de consulta
     try {
-        axios.post("http://localhost:6000/eventos", evento);
+        axios.post("http://consulta-clusterip-service:${PORTCON}/eventos", evento);
     } catch (err) {alert}
     //Envia evento para o ms de classificacao
     try {
-        axios.post("http://localhost:7000/eventos", evento);
+        axios.post("http://classificacao-clusterip-service:${PORTCLA}/eventos", evento);
     } catch (err) {alert}
     try {
-        axios.post("http://localhost:8000/eventos", evento);
-    } catch (err) {alert}
+        axios.post("http://logs-clusterip-service:${PORTLOG}/eventos", evento);
+    } catch (err) {alert} 
     res.status(200).send({ msg:'ok' });
 })
 
@@ -36,6 +44,6 @@ app.get('/eventos', (req, res) => {
     res.send(eventos)
 })
 
-app.listen(10000, () => {
-    console.log("Barramento de eventos, porta 10000")
+app.listen(PORT, () => {
+    console.log("Barramento de eventos, porta ${PORT}")
 })

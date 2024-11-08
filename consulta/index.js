@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 app.use(express.json());
+require('dotenv').config()
+const { PORT } = process.env
+const { BARR } = process.env
 
 const baseConsulta = {};
 
@@ -35,9 +38,9 @@ app.post('/eventos', (req, res) => {
     res.status(200).send(baseConsulta);
 });
 
-app.listen(6000, async () => {
-    console.log(`Consultas, 6000`)
-    const resp = await axios.get('http://localhost:10000/eventos')
+app.listen(PORT, async () => {
+    console.log(`Consultas, ${PORT}`)
+    const resp = await axios.get(`http://barramento-de-eventos-service:${BARR}/eventos`)
     resp.data.forEach((valor, indice, colecao) => {
       try{
         funcoes[valor.tipo](valor.tipo)
