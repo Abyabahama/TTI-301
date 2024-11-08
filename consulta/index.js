@@ -36,12 +36,13 @@ app.post('/eventos', (req, res) => {
 });
 
 app.listen(6000, async () => {
-    console.log('Consultas, porta 6000');
-    const resp = await axios.get("http://localhost:10000/eventos");
+    console.log(`Consultas, 6000`)
+    const resp = await axios.get('http://localhost:10000/eventos')
     resp.data.forEach((valor, indice, colecao) => {
-        try {
-            funcoes[valor.tipo](valor.dados);
-        } catch (err) {}
-    });
-        
-});
+      try{
+        funcoes[valor.tipo](valor.tipo)
+      }
+      catch(err){}
+    })
+  
+})
